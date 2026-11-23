@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)https://bootstrapdocs.com/v2.0.3/docs/examples/hero.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title id="websitetit">Гайд - тестовый</title>
+    <meta property="og:image" content="https://example.com" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/98.css"
+    >
+    <!-- Le styles -->
+    <link href="bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+        overflow-x: hidden;
+      }
+    </style>
+    <link href="bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <script src="index.js"></script>
+  </head>
+
+  <body style="background-color: #dfdfdf;" onload="loadTemplate(); loadposts()">
+    <div id="header">
+    </div>
+
+    <div class="container">
+
+  <div class="window" style="width: 100%; ">
+    <div class="title-bar">
+      <div class="title-bar-text">playbredum.net - offering</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize"></button>
+        <button aria-label="Maximize"></button>
+        <button aria-label="Close"></button>
+      </div>
+    </div>
+    <div class="window-body">
+      <div class="row" id="guidescont">
+
+        
+      </div>
+      </div>
+      <hr>      
+    </div>
+  </div>
+<hr>
+      <!-- Example row of columns -->
+
+
+      <footer>
+        <p>© Company 2012</p>
+        <p>© Company 2012</p>
+
+                <p>© Company 2013</p>
+
+
+                        <p>© playbredum 2026 not affiliated with roblox or sonies litlbigplanet fnas for fans real shi bru</p>
+
+
+      </footer>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+<script src="https://cdn.jsdelivr.net/npm/marked@18.2.1/lib/marked.umd.min.js"></script>
+<style>
+    #guidescont {
+        font-size: larger;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+</style>
+<script>
+    async function loadposts(){
+        try {
+            const news  = await fetch('./guides/guides.json')
+            if (!news.ok){
+                throw new Error('error bruh', news.status)
+            }
+            const data = await news.json()
+            
+            console.log(data)
+
+            const newscont = document.getElementById("guidescont")
+            const titel = document.getElementById("websitetit")
+            const params = new URLSearchParams(window.location.search)
+            const thiss = data.data[params.get('guide')]
+            titel.innerHTML = ""
+            titel.innerHTML = thiss.title
+            newscont.innerHTML = ""
+            for (const post in data.data ){
+                const file  = await fetch(`./guides/${params.get('guide')}.md`)
+                if (!file.ok){
+                    throw new Error('error bruh', news.status)
+                }
+                const mdText = await file.text()
+                const mdhtml = marked.parse(mdText)
+                // const option = {
+                //     year: 'numeric',
+                //     month: 'long',
+                //     day:'numeric',
+                // }
+                // const date = new Date(data.data[post].date * 1000).toLocaleString(undefined, option)
+                newscont.innerHTML +=
+                        `
+                          <div class="span">
+                            <p>${mdhtml}</p>
+                          </div> <br>
+                        `
+            }
+
+
+        } catch (error){
+            console.error("cant load news", error)
+        }
+    }
+</script>
+</body></html>
